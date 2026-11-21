@@ -1,0 +1,912 @@
+{
+  "schema_version": "1.0",
+  "kind": "actual_localhost_http_measurements",
+  "environment": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.13.5",
+    "processor": "",
+    "architecture": "x86_64"
+  },
+  "benchmark_config": {
+    "requests": 240,
+    "repeats": 3,
+    "workers": 24,
+    "offered_rps": 180.0,
+    "backend_capacity": 8,
+    "seed": 41
+  },
+  "fault_model": {
+    "incident_window": "requests/6 to 5*requests/6",
+    "classes": "32% permanent 503; 32% first-attempt 503; 15% 55ms slow 200; 21% healthy",
+    "fault_distribution": "deterministic modulo 100",
+    "deadline_ms": 190,
+    "client_timeout_ms": 40,
+    "backend_capacity": 8,
+    "test_scope": "single host / 127.0.0.1 / HTTP threads; NOT cloud cluster"
+  },
+  "policies": [
+    {
+      "name": "direct",
+      "max_attempts": 1,
+      "backoff": false,
+      "breaker": false,
+      "bulkhead": false,
+      "retry_budget_fraction": 0.0
+    },
+    {
+      "name": "naive_retry",
+      "max_attempts": 3,
+      "backoff": false,
+      "breaker": false,
+      "bulkhead": false,
+      "retry_budget_fraction": 0.0
+    },
+    {
+      "name": "jitter_retry",
+      "max_attempts": 3,
+      "backoff": true,
+      "breaker": false,
+      "bulkhead": false,
+      "retry_budget_fraction": 0.0
+    },
+    {
+      "name": "breaker_only",
+      "max_attempts": 1,
+      "backoff": false,
+      "breaker": true,
+      "bulkhead": false,
+      "retry_budget_fraction": 0.0
+    },
+    {
+      "name": "budget_bulkhead",
+      "max_attempts": 3,
+      "backoff": true,
+      "breaker": false,
+      "bulkhead": true,
+      "retry_budget_fraction": 0.3
+    },
+    {
+      "name": "protected",
+      "max_attempts": 3,
+      "backoff": true,
+      "breaker": true,
+      "bulkhead": true,
+      "retry_budget_fraction": 0.3
+    }
+  ],
+  "runs": [
+    {
+      "policy": "direct",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 115,
+      "success_percent": 47.917,
+      "downstream_attempts": 240,
+      "amplification": 1.0,
+      "backend_http_503": 102,
+      "backend_overload": 0,
+      "backend_http_200": 138,
+      "max_backend_in_flight": 3,
+      "p50_ms": 4.649,
+      "p95_ms": 40.255,
+      "p99_ms": 40.306,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 115,
+        "http_503": 102,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.832
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 35,
+          "attempts": 160,
+          "p95_ms": 40.27
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.911
+        }
+      }
+    },
+    {
+      "policy": "naive_retry",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 438,
+      "amplification": 1.825,
+      "backend_http_503": 202,
+      "backend_overload": 0,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 7,
+      "p50_ms": 4.74,
+      "p95_ms": 120.717,
+      "p99_ms": 120.969,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.869
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 358,
+          "p95_ms": 120.812
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.872
+        }
+      }
+    },
+    {
+      "policy": "jitter_retry",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 440,
+      "amplification": 1.8333,
+      "backend_http_503": 204,
+      "backend_overload": 2,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 8,
+      "p50_ms": 8.439,
+      "p95_ms": 156.242,
+      "p99_ms": 175.781,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.862
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 360,
+          "p95_ms": 162.636
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.871
+        }
+      }
+    },
+    {
+      "policy": "breaker_only",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 76,
+      "success_percent": 31.667,
+      "downstream_attempts": 92,
+      "amplification": 0.3833,
+      "backend_http_503": 15,
+      "backend_overload": 0,
+      "backend_http_200": 77,
+      "max_backend_in_flight": 2,
+      "p50_ms": 0.003,
+      "p95_ms": 4.785,
+      "p99_ms": 5.365,
+      "wall_s": 1.333,
+      "breaker_opens": 7,
+      "breaker_rejects": 148,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 76,
+        "http_503": 15,
+        "timeout": 1,
+        "breaker_open": 148
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.878
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 3,
+          "attempts": 19,
+          "p95_ms": 1.079
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 33,
+          "attempts": 33,
+          "p95_ms": 4.838
+        }
+      }
+    },
+    {
+      "policy": "budget_bulkhead",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 135,
+      "success_percent": 56.25,
+      "downstream_attempts": 312,
+      "amplification": 1.3,
+      "backend_http_503": 141,
+      "backend_overload": 1,
+      "backend_http_200": 171,
+      "max_backend_in_flight": 8,
+      "p50_ms": 4.696,
+      "p95_ms": 43.208,
+      "p99_ms": 151.997,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 72,
+      "reason_counts": {
+        "ok": 135,
+        "http_503": 18,
+        "timeout": 6,
+        "retry_budget": 81
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.85
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 55,
+          "attempts": 232,
+          "p95_ms": 58.864
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.505
+        }
+      }
+    },
+    {
+      "policy": "protected",
+      "repeat": 0,
+      "seed": 41,
+      "requests": 240,
+      "successes": 68,
+      "success_percent": 28.333,
+      "downstream_attempts": 92,
+      "amplification": 0.3833,
+      "backend_http_503": 21,
+      "backend_overload": 0,
+      "backend_http_200": 71,
+      "max_backend_in_flight": 3,
+      "p50_ms": 0.003,
+      "p95_ms": 15.178,
+      "p99_ms": 54.006,
+      "wall_s": 1.333,
+      "breaker_opens": 7,
+      "breaker_rejects": 170,
+      "retry_budget_spent": 22,
+      "reason_counts": {
+        "ok": 68,
+        "http_503": 2,
+        "breaker_open": 170
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.797
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 8,
+          "attempts": 32,
+          "p95_ms": 19.391
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 20,
+          "attempts": 20,
+          "p95_ms": 4.776
+        }
+      }
+    },
+    {
+      "policy": "naive_retry",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 438,
+      "amplification": 1.825,
+      "backend_http_503": 202,
+      "backend_overload": 0,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 8,
+      "p50_ms": 4.691,
+      "p95_ms": 120.721,
+      "p99_ms": 120.999,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.773
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 358,
+          "p95_ms": 120.812
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.819
+        }
+      }
+    },
+    {
+      "policy": "jitter_retry",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 438,
+      "amplification": 1.825,
+      "backend_http_503": 202,
+      "backend_overload": 2,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 8,
+      "p50_ms": 6.794,
+      "p95_ms": 159.203,
+      "p99_ms": 181.629,
+      "wall_s": 1.334,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.151
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 358,
+          "p95_ms": 168.303
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.999
+        }
+      }
+    },
+    {
+      "policy": "breaker_only",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 77,
+      "success_percent": 32.083,
+      "downstream_attempts": 93,
+      "amplification": 0.3875,
+      "backend_http_503": 15,
+      "backend_overload": 0,
+      "backend_http_200": 78,
+      "max_backend_in_flight": 2,
+      "p50_ms": 0.003,
+      "p95_ms": 4.774,
+      "p99_ms": 5.435,
+      "wall_s": 1.333,
+      "breaker_opens": 7,
+      "breaker_rejects": 147,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 77,
+        "http_503": 15,
+        "timeout": 1,
+        "breaker_open": 147
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.123
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 3,
+          "attempts": 19,
+          "p95_ms": 0.893
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 34,
+          "attempts": 34,
+          "p95_ms": 4.823
+        }
+      }
+    },
+    {
+      "policy": "budget_bulkhead",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 135,
+      "success_percent": 56.25,
+      "downstream_attempts": 312,
+      "amplification": 1.3,
+      "backend_http_503": 141,
+      "backend_overload": 0,
+      "backend_http_200": 171,
+      "max_backend_in_flight": 8,
+      "p50_ms": 4.688,
+      "p95_ms": 47.861,
+      "p99_ms": 164.826,
+      "wall_s": 1.334,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 72,
+      "reason_counts": {
+        "ok": 135,
+        "http_503": 19,
+        "timeout": 6,
+        "retry_budget": 80
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.857
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 55,
+          "attempts": 232,
+          "p95_ms": 57.704
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.607
+        }
+      }
+    },
+    {
+      "policy": "protected",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 82,
+      "success_percent": 34.167,
+      "downstream_attempts": 99,
+      "amplification": 0.4125,
+      "backend_http_503": 16,
+      "backend_overload": 0,
+      "backend_http_200": 83,
+      "max_backend_in_flight": 3,
+      "p50_ms": 0.003,
+      "p95_ms": 7.638,
+      "p99_ms": 34.047,
+      "wall_s": 1.333,
+      "breaker_opens": 7,
+      "breaker_rejects": 157,
+      "retry_budget_spent": 16,
+      "reason_counts": {
+        "ok": 82,
+        "http_503": 1,
+        "breaker_open": 157
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.892
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 5,
+          "attempts": 22,
+          "p95_ms": 14.868
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 37,
+          "attempts": 37,
+          "p95_ms": 4.776
+        }
+      }
+    },
+    {
+      "policy": "direct",
+      "repeat": 1,
+      "seed": 42,
+      "requests": 240,
+      "successes": 115,
+      "success_percent": 47.917,
+      "downstream_attempts": 240,
+      "amplification": 1.0,
+      "backend_http_503": 102,
+      "backend_overload": 0,
+      "backend_http_200": 138,
+      "max_backend_in_flight": 3,
+      "p50_ms": 4.631,
+      "p95_ms": 40.231,
+      "p99_ms": 40.487,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 115,
+        "http_503": 102,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.763
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 35,
+          "attempts": 160,
+          "p95_ms": 40.246
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.798
+        }
+      }
+    },
+    {
+      "policy": "jitter_retry",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 438,
+      "amplification": 1.825,
+      "backend_http_503": 202,
+      "backend_overload": 0,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 8,
+      "p50_ms": 7.486,
+      "p95_ms": 159.273,
+      "p99_ms": 175.414,
+      "wall_s": 1.334,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.794
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 358,
+          "p95_ms": 165.45
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.939
+        }
+      }
+    },
+    {
+      "policy": "breaker_only",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 77,
+      "success_percent": 32.083,
+      "downstream_attempts": 93,
+      "amplification": 0.3875,
+      "backend_http_503": 15,
+      "backend_overload": 0,
+      "backend_http_200": 78,
+      "max_backend_in_flight": 2,
+      "p50_ms": 0.004,
+      "p95_ms": 4.887,
+      "p99_ms": 5.66,
+      "wall_s": 1.333,
+      "breaker_opens": 7,
+      "breaker_rejects": 147,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 77,
+        "http_503": 15,
+        "timeout": 1,
+        "breaker_open": 147
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.54
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 3,
+          "attempts": 19,
+          "p95_ms": 1.151
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 34,
+          "attempts": 34,
+          "p95_ms": 4.982
+        }
+      }
+    },
+    {
+      "policy": "budget_bulkhead",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 135,
+      "success_percent": 56.25,
+      "downstream_attempts": 312,
+      "amplification": 1.3,
+      "backend_http_503": 141,
+      "backend_overload": 0,
+      "backend_http_200": 171,
+      "max_backend_in_flight": 7,
+      "p50_ms": 4.701,
+      "p95_ms": 46.731,
+      "p99_ms": 161.582,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 72,
+      "reason_counts": {
+        "ok": 135,
+        "http_503": 19,
+        "timeout": 6,
+        "retry_budget": 80
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 5.026
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 55,
+          "attempts": 232,
+          "p95_ms": 57.583
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.999
+        }
+      }
+    },
+    {
+      "policy": "protected",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 79,
+      "success_percent": 32.917,
+      "downstream_attempts": 102,
+      "amplification": 0.425,
+      "backend_http_503": 21,
+      "backend_overload": 0,
+      "backend_http_200": 81,
+      "max_backend_in_flight": 3,
+      "p50_ms": 0.003,
+      "p95_ms": 16.395,
+      "p99_ms": 55.807,
+      "wall_s": 1.334,
+      "breaker_opens": 7,
+      "breaker_rejects": 161,
+      "retry_budget_spent": 23,
+      "reason_counts": {
+        "ok": 79,
+        "breaker_open": 161
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.923
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 9,
+          "attempts": 32,
+          "p95_ms": 24.204
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 30,
+          "attempts": 30,
+          "p95_ms": 4.873
+        }
+      }
+    },
+    {
+      "policy": "direct",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 115,
+      "success_percent": 47.917,
+      "downstream_attempts": 240,
+      "amplification": 1.0,
+      "backend_http_503": 102,
+      "backend_overload": 0,
+      "backend_http_200": 138,
+      "max_backend_in_flight": 5,
+      "p50_ms": 4.614,
+      "p95_ms": 40.246,
+      "p99_ms": 40.279,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 115,
+        "http_503": 102,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 6.314
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 35,
+          "attempts": 160,
+          "p95_ms": 40.253
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.762
+        }
+      }
+    },
+    {
+      "policy": "naive_retry",
+      "repeat": 2,
+      "seed": 43,
+      "requests": 240,
+      "successes": 167,
+      "success_percent": 69.583,
+      "downstream_attempts": 438,
+      "amplification": 1.825,
+      "backend_http_503": 202,
+      "backend_overload": 0,
+      "backend_http_200": 236,
+      "max_backend_in_flight": 8,
+      "p50_ms": 4.675,
+      "p95_ms": 120.681,
+      "p99_ms": 120.892,
+      "wall_s": 1.333,
+      "breaker_opens": 0,
+      "breaker_rejects": 0,
+      "retry_budget_spent": 0,
+      "reason_counts": {
+        "ok": 167,
+        "http_503": 50,
+        "timeout": 23
+      },
+      "phases": {
+        "healthy_before": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.778
+        },
+        "incident": {
+          "requests": 160,
+          "successes": 87,
+          "attempts": 358,
+          "p95_ms": 120.71
+        },
+        "healthy_after": {
+          "requests": 40,
+          "successes": 40,
+          "attempts": 40,
+          "p95_ms": 4.821
+        }
+      }
+    }
+  ]
+}

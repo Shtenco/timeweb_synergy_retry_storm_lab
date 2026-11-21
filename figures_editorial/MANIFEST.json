@@ -1,0 +1,92 @@
+[
+  {
+    "file": "00_COVER_780x440.png",
+    "caption": "КПДВ: успешность budget+bulkhead и той же конфигурации с breaker",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "01_SUCCESS_DOT_RANGE.png",
+    "caption": "Шесть клиентских политик: медианы и три индивидуальных запуска",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "02_FAILURE_RIBBON.png",
+    "caption": "Фактические классы отказов в журнале сервера на 240 исходных ID",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "03_AMPLIFICATION.png",
+    "caption": "Число реальных HTTP-попыток на одну логическую операцию",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "04_PHASE_HEATMAP.png",
+    "caption": "Доля успешных операций до аварии, во время неё и после",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "05_LATENCY_DUMBBELL.png",
+    "caption": "Медиана и p95 времени до ответа или отказа, включая быстрые отказы",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "06_ECDF_LATENCY.png",
+    "caption": "Эмпирические распределения задержек четырёх политик, первый повтор",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "07_REQUEST_OUTCOME_RASTER.png",
+    "caption": "Результат каждого из 240 исходных запросов по политикам, первый повтор",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "08_ATTEMPTS_STACK.png",
+    "caption": "Число операций с одной, двумя и тремя HTTP-попытками",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "09_REASONS_STACK.png",
+    "caption": "Причины завершения логических операций по сырым записям",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "10_PAIRED_BREAKER_ABLATION.png",
+    "caption": "Парное сравнение конфигураций с общим breaker и без него",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "11_TRADEOFF_SCATTER.png",
+    "caption": "Компромисс между HTTP-усилением и успешностью в 18 прогонах",
+    "kind": "measured",
+    "source": "results/experiment_18/benchmark.json + operations.csv + backend_events.csv"
+  },
+  {
+    "file": "12_RETRY_SEQUENCE_SCHEMATIC.png",
+    "caption": "Последовательность retry и проверки общего бюджета, принцип работы",
+    "kind": "conceptual",
+    "source": "source code and methodology"
+  },
+  {
+    "file": "13_BREAKER_STATE_MACHINE.png",
+    "caption": "Переходы автомата circuit breaker: CLOSED, OPEN и HALF-OPEN",
+    "kind": "conceptual",
+    "source": "source code and methodology"
+  },
+  {
+    "file": "14_DEPLOYMENT_CHECKLIST.png",
+    "caption": "Критерии безопасной настройки защиты перед продуктивным запуском",
+    "kind": "conceptual",
+    "source": "source code and methodology"
+  }
+]

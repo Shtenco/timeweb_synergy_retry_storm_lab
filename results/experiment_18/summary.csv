@@ -1,0 +1,7 @@
+policy,n,median_success_percent,min_success_percent,max_success_percent,median_amplification,median_p95_ms,median_backend_overload,median_breaker_rejects
+breaker_only,3,32.083,31.667,32.083,0.3875,4.785,0,147
+budget_bulkhead,3,56.25,56.25,56.25,1.3,46.731,0,0
+direct,3,47.917,47.917,47.917,1.0,40.246,0,0
+jitter_retry,3,69.583,69.583,69.583,1.825,159.203,2,0
+naive_retry,3,69.583,69.583,69.583,1.825,120.717,0,0
+protected,3,32.917,28.333,34.167,0.4125,15.178,0,161

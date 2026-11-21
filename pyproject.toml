@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "retrystorm-lab"
+version = "1.0.0"
+description = "Reproducible localhost HTTP retry-storm / circuit-breaker / bulkhead experiments"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+plots = ["matplotlib>=3.7"]
+
+[project.scripts]
+retrystorm = "retrystorm.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

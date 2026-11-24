@@ -181,10 +181,6 @@ class PolicyRunner:
                 reason = "deadline"
                 break
             if attempt > 1:
-                if self.budget is not None and not self.budget.take():
-                    reason = "retry_budget"
-                    break
-                retry_count += 1
                 if self.config.backoff:
                     pause = stable_jitter_ms(request_id, attempt, self.seed, 12.0)/1000
                     if pause >= remaining:
@@ -195,6 +191,11 @@ class PolicyRunner:
                     if remaining <= 0:
                         reason = "deadline"
                         break
+                # Spend retry budget only after the retry delay has completed and
+                # there is still time to make an actual upstream attempt.
+                if self.budget is not None and not self.budget.take():
+                    reason = "retry_budget"
+                    break
             permit = self.breaker.allow() if self.breaker is not None else None
             if self.breaker is not None and permit is None:
                 reason = "breaker_open"
@@ -212,6 +213,8 @@ class PolicyRunner:
             try:
                 timeout = min(self.timeout, max(0.001, deadline - time.monotonic()))
                 attempts += 1
+                if attempt > 1:
+                    retry_count += 1
                 status, reason = self._call(request_id, attempt, timeout)
             finally:
                 if admitted:

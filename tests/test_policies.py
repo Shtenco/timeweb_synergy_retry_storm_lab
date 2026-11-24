@@ -1,6 +1,7 @@
 import threading
 import unittest
-from retrystorm.policies import CircuitBreaker, RetryBudget, stable_jitter_ms, PolicyRunner, POLICIES
+from retrystorm.policies import CircuitBreaker, RetryBudget, stable_jitter_ms, PolicyRunner, PolicyConfig, POLICIES
+from unittest.mock import patch
 
 class PolicyTests(unittest.TestCase):
     def test_breaker_half_open_and_recovery(self):
@@ -72,6 +73,24 @@ class ConcurrentBreakerTests(unittest.TestCase):
         for t in threads:t.join()
         self.assertEqual(sum(x is not None for x in permits),1)
         self.assertEqual(b.snapshot()['half_open_probes'],1)
+
+    def test_deadline_expired_before_retry_does_not_spend_budget_or_count_retry(self):
+        config = PolicyConfig("deadline-budget", 3, backoff=True, retry_budget_fraction=0.30)
+        runner = PolicyRunner(
+            config, "http://127.0.0.1:12345", requests=10, seed=41,
+            per_attempt_timeout_s=0.005, operation_deadline_s=0.02,
+        )
+        calls = []
+        runner._call = lambda request_id, attempt, timeout: (calls.append(attempt) or (503, "http_503"))
+        with patch("retrystorm.policies.stable_jitter_ms", return_value=1000.0):
+            row = runner.operate(1)
+
+        self.assertEqual(calls, [1])
+        self.assertEqual(row["attempts"], 1)
+        self.assertEqual(row["retries"], 0)
+        self.assertEqual(row["reason"], "deadline")
+        self.assertEqual(runner.budget.spent, 0)
+        self.assertEqual(runner.budget.remaining, 3)
 
     def test_six_policy_names_unique(self):
         self.assertEqual(len(POLICIES),6)
